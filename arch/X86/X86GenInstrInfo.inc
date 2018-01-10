@@ -8867,8 +8867,10 @@ enum {
     X86_XTEST	= 8850,
     X86_fdisi8087_nop	= 8851,
     X86_feni8087_nop	= 8852,
-    X86_UD0	= 8853,
-    X86_INSTRUCTION_LIST_END = 8854
+    X86_RDPKRU = 8853,
+    X86_WRPKRU = 8854,
+    X86_UD0	= 8855,
+    X86_INSTRUCTION_LIST_END = 8856
 };
 
 #endif // GET_INSTRINFO_ENUM
@@ -19597,6 +19599,8 @@ static const bool is_64bit_insn[] = {
 	true,
 	false,
 	true,
+	false,
+	false,
 	false,
 	false,
 	false,

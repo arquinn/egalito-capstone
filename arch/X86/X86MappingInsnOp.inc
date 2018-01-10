@@ -8661,6 +8661,10 @@
 	0,
 	{ 0 }
 },
+{	/* X86_RDPKRU, X86_INS_RDPKRU: rdpkru */
+	0,
+	{ 0 }
+},
 {	/* X86_RDPMC, X86_INS_RDPMC: rdpmc */
 	0,
 	{ 0 }
@@ -33558,6 +33562,10 @@
 	{ CS_AC_READ, 0 }
 },
 {	/* X86_WRMSR, X86_INS_WRMSR: wrmsr */
+	0,
+	{ 0 }
+},
+{	/* X86_WRPKRU, X86_INS_WRPKRU: wrpkru */
 	0,
 	{ 0 }
 },

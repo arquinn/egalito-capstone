@@ -8867,6 +8867,8 @@ static void printInstruction(MCInst *MI, SStream *O, MCRegisterInfo *MRI)
     13884U,	// XTEST
     13315U,	// fdisi8087_nop
     13302U,	// feni8087_nop
+    0U,	// RDPKRU
+    0U,	// WRPKRU
     0U
   };
 
@@ -17724,6 +17726,8 @@ static void printInstruction(MCInst *MI, SStream *O, MCRegisterInfo *MRI)
     0U,	// XTEST
     0U,	// fdisi8087_nop
     0U,	// feni8087_nop
+    0U,	// RDPKRU
+    0U,	// WRPKRU
     0U
   };
 
