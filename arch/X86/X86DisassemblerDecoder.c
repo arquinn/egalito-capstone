@@ -170,6 +170,7 @@ static InstrUID decode(OpcodeType type,
 	const uint8_t *indextable = NULL;
 	uint8_t index;
 
+#if 1
     printf("inside decode with type=%d (TWOBYTE=%d), opcode=%x, modRM=%x\n", type, TWOBYTE, opcode, modRM);
     if(type == TWOBYTE && opcode == 0x01 && modRM == 0xee) {
         return X86_RDPKRU;
@@ -179,6 +180,7 @@ static InstrUID decode(OpcodeType type,
     else if(type == TWOBYTE && opcode == 0x01 && modRM == 0xef) {
         return X86_WRPKRU;
     }
+#endif
 
 	switch (type) {
 		default:
@@ -1117,6 +1119,19 @@ static int getIDWithAttrMask(uint16_t *instructionID,
 		*instructionID = X86_FEMMS;
 		return 0;
 	}
+#endif
+
+#if 0
+    if (insn->opcodeType == TWOBYTE && insn->opcode == 0x01) {
+        if (insn->modRM == 0xee) {
+            *instructionID = X86_RDPKRU;
+            return 0;
+        }
+        else if (insn->modRM == 0xef) {
+            *instructionID = X86_WRPKRU;
+            return 0;
+        }
+    }
 #endif
 
 	if (insn->opcodeType == T3DNOW_MAP)
