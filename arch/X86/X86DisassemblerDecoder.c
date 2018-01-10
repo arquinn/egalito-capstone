@@ -1190,22 +1190,6 @@ static int getID(struct InternalInstruction *insn)
 	uint16_t attrMask;
 	uint16_t instructionID;
 
-#if 0
-    printf("getID() called\n");
-    if (insn->opcodeType == TWOBYTE && insn->opcode == 0x01) {
-        if (insn->modRM == 0xee) {
-            insn->instructionID = X86_RDPKRU;
-            insn->spec = specifierForUID(instructionID);
-            return 0;
-        }
-        else if (insn->modRM == 0xef) {
-            insn->instructionID = X86_WRPKRU;
-            insn->spec = specifierForUID(instructionID);
-            return 0;
-        }
-    }
-#endif
-
 	// printf(">>> getID()\n");
 	attrMask = ATTR_NONE;
 
