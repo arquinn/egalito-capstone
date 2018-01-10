@@ -143,7 +143,7 @@ static int modRMRequired(OpcodeType type,
 		return false;
 }
 
-// Hacky for RDPKRU, WRPKRU
+// Hacky for FEMMS, RDPKRU, WRPKRU
 #define GET_INSTRINFO_ENUM
 #ifndef CAPSTONE_X86_REDUCE
 #include "X86GenInstrInfo.inc"
@@ -171,11 +171,9 @@ static InstrUID decode(OpcodeType type,
 	uint8_t index;
 
 #if 1
-    printf("inside decode with type=%d (TWOBYTE=%d), opcode=%x, modRM=%x\n", type, TWOBYTE, opcode, modRM);
+    //printf("inside decode with type=%d (TWOBYTE=%d), opcode=%x, modRM=%x\n", type, TWOBYTE, opcode, modRM);
     if(type == TWOBYTE && opcode == 0x01 && modRM == 0xee) {
         return X86_RDPKRU;
-        //opcode = X86_;
-        //dec = &emptyTable.modRMDecisions[opcode];
     }
     else if(type == TWOBYTE && opcode == 0x01 && modRM == 0xef) {
         return X86_WRPKRU;
@@ -1085,14 +1083,6 @@ static int readOpcode(struct InternalInstruction *insn)
 	return 0;
 }
 
-// Hacky for FEMMS
-//#define GET_INSTRINFO_ENUM
-//#ifndef CAPSTONE_X86_REDUCE
-//#include "X86GenInstrInfo.inc"
-//#else
-//#include "X86GenInstrInfo_reduce.inc"
-//#endif
-
 /*
  * getIDWithAttrMask - Determines the ID of an instruction, consuming
  *   the ModR/M byte as appropriate for extended and escape opcodes,
@@ -1119,19 +1109,6 @@ static int getIDWithAttrMask(uint16_t *instructionID,
 		*instructionID = X86_FEMMS;
 		return 0;
 	}
-#endif
-
-#if 0
-    if (insn->opcodeType == TWOBYTE && insn->opcode == 0x01) {
-        if (insn->modRM == 0xee) {
-            *instructionID = X86_RDPKRU;
-            return 0;
-        }
-        else if (insn->modRM == 0xef) {
-            *instructionID = X86_WRPKRU;
-            return 0;
-        }
-    }
 #endif
 
 	if (insn->opcodeType == T3DNOW_MAP)
