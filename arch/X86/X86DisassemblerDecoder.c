@@ -143,6 +143,14 @@ static int modRMRequired(OpcodeType type,
 		return false;
 }
 
+// Hacky for RDPKRU, WRPKRU
+#define GET_INSTRINFO_ENUM
+#ifndef CAPSTONE_X86_REDUCE
+#include "X86GenInstrInfo.inc"
+#else
+#include "X86GenInstrInfo_reduce.inc"
+#endif
+
 /*
  * decode - Reads the appropriate instruction table to obtain the unique ID of
  *   an instruction.
@@ -161,6 +169,16 @@ static InstrUID decode(OpcodeType type,
 	const struct ModRMDecision *dec = NULL;
 	const uint8_t *indextable = NULL;
 	uint8_t index;
+
+    printf("inside decode with type=%d (TWOBYTE=%d), opcode=%x, modRM=%x\n", type, TWOBYTE, opcode, modRM);
+    if(type == TWOBYTE && opcode == 0x01 && modRM == 0xee) {
+        return X86_RDPKRU;
+        //opcode = X86_;
+        //dec = &emptyTable.modRMDecisions[opcode];
+    }
+    else if(type == TWOBYTE && opcode == 0x01 && modRM == 0xef) {
+        return X86_WRPKRU;
+    }
 
 	switch (type) {
 		default:
@@ -1066,12 +1084,12 @@ static int readOpcode(struct InternalInstruction *insn)
 }
 
 // Hacky for FEMMS
-#define GET_INSTRINFO_ENUM
-#ifndef CAPSTONE_X86_REDUCE
-#include "X86GenInstrInfo.inc"
-#else
-#include "X86GenInstrInfo_reduce.inc"
-#endif
+//#define GET_INSTRINFO_ENUM
+//#ifndef CAPSTONE_X86_REDUCE
+//#include "X86GenInstrInfo.inc"
+//#else
+//#include "X86GenInstrInfo_reduce.inc"
+//#endif
 
 /*
  * getIDWithAttrMask - Determines the ID of an instruction, consuming
