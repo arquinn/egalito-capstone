@@ -179,10 +179,10 @@ static InstrUID decode(OpcodeType type,
         return X86_WRPKRU;
     }
     else if(type == TWOBYTE && opcode == 0x01 && modRM == 0xfa) {
-        return X86_MONITOR;  // MONITORX
+        return X86_MONITORrrr;  // MONITORX
     }
     else if(type == TWOBYTE && opcode == 0x01 && modRM == 0xfb) {
-        return X86_MONITOR;  // MWAITX
+        return X86_MWAITrr;  // MWAITX
     }
 #endif
 
