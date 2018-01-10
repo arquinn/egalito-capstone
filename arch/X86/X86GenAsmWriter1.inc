@@ -20508,6 +20508,12 @@ static char *printAliasInstr(MCInst *MI, SStream *OS, void *info)
   MCRegisterInfo *MRI = (MCRegisterInfo *)info;
   switch (MCInst_getOpcode(MI)) {
   default: return NULL;
+  case X86_RDPKRU:
+    AsmString = "rdpkru";
+    break;
+  case X86_WRPKRU:
+    AsmString = "wrpkru";
+    break;
   case X86_AAD8i8:
     if (MCInst_getNumOperands(MI) == 1 &&
         MCOperand_isImm(MCInst_getOperand(MI, 0)) &&
