@@ -50917,3 +50917,15 @@
 	{ 0 }, { 0 }, { 0 }, 0, 0
 #endif
 },
+{
+	X86_ENDBR32, X86_INS_ENDBR32,
+#ifndef CAPSTONE_DIET
+	{ 0 }, { 0 }, { 0 }, 0, 0
+#endif
+},
+{
+	X86_ENDBR64, X86_INS_ENDBR64,
+#ifndef CAPSTONE_DIET
+	{ 0 }, { 0 }, { 0 }, 0, 0
+#endif
+},
