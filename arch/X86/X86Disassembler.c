@@ -476,12 +476,12 @@ static bool translateRMRegister(MCInst *mcInst, InternalInstruction *insn)
 static bool translateRMMemory(MCInst *mcInst, InternalInstruction *insn)
 {
 	// Addresses in an MCInst are represented as five operands:
-	//   1. basereg       (register)  The R/M base, or (if there is a SIB) the 
+	//   1. basereg       (register)  The R/M base, or (if there is a SIB) the
 	//                                SIB base
-	//   2. scaleamount   (immediate) 1, or (if there is a SIB) the specified 
+	//   2. scaleamount   (immediate) 1, or (if there is a SIB) the specified
 	//                                scale amount
 	//   3. indexreg      (register)  x86_registerNONE, or (if there is a SIB)
-	//                                the index (which is multiplied by the 
+	//                                the index (which is multiplied by the
 	//                                scale amount)
 	//   4. displacement  (immediate) 0, or the displacement if there is one
 	//   5. segmentreg    (register)  x86_registerNONE for now, but could be set
@@ -633,7 +633,7 @@ static bool translateRMMemory(MCInst *mcInst, InternalInstruction *insn)
 						//   placeholders to keep the compiler happy.
 #define ENTRY(x)                                        \
 					case EA_BASE_##x:                                 \
-						  MCOperand_CreateReg0(mcInst, X86_##x); break; 
+						  MCOperand_CreateReg0(mcInst, X86_##x); break;
 						ALL_EA_BASES
 #undef ENTRY
 #define ENTRY(x) case EA_REG_##x:
@@ -667,7 +667,7 @@ static bool translateRMMemory(MCInst *mcInst, InternalInstruction *insn)
 /// @return             - 0 on success; nonzero otherwise
 static bool translateRM(MCInst *mcInst, const OperandSpecifier *operand,
 		InternalInstruction *insn)
-{  
+{
 	switch (operand->type) {
 		case TYPE_R8:
 		case TYPE_R16:
@@ -738,7 +738,7 @@ static bool translateMaskRegister(MCInst *mcInst, uint8_t maskRegNum)
 	return false;
 }
 
-/// translateOperand - Translates an operand stored in an internal instruction 
+/// translateOperand - Translates an operand stored in an internal instruction
 ///   to LLVM's format and appends it to an MCInst.
 ///
 /// @param mcInst       - The MCInst to append to.
@@ -1001,6 +1001,53 @@ bool X86_getInstruction(csh ud, const uint8_t *code, size_t code_len,
 								}
 								return true;
 							}
+						}
+
+
+
+						unsigned char b[4];
+						for(int i = 0; i < 4; i ++) {
+						    reader(&info, &b[i], address + i);
+						}
+
+						// rdssp
+						if (b[0] == 0xf3 && b[1] == 0x48 && b[2] == 0x0f && b[3] == 0x1e) {
+							instr->Opcode = X86_UD0;
+							instr->OpcodePub = X86_INS_UD0;
+							strncpy(instr->assembly, "rdssp", 5+1);
+							if (instr->flat_insn->detail) {
+								for(int i = 0; i < 4; i ++) {
+									instr->flat_insn->detail->x86.opcode[i] = b[i];
+								}
+								/*for(int i = 0; i < 5; i ++) {
+									instr->flat_insn->detail->x86.opcode[i] = b[i];
+								}*/
+							}
+							return true;
+						}
+				}
+				return false;
+			case 5: {
+						unsigned char b[5];
+						for(int i = 0; i < 5; i ++) {
+						    reader(&info, &b[i], address + i);
+						}
+
+						// incssp
+						if (b[0] == 0xf3 && b[1] == 0x48 && b[2] == 0x0f && b[3] == 0xae
+								&& ((b[4] & 0xf0) == 0xe0)) {
+							instr->Opcode = X86_UD0;
+							instr->OpcodePub = X86_INS_UD0;
+							strncpy(instr->assembly, "incssp", 6+1);
+							if (instr->flat_insn->detail) {
+								for(int i = 0; i < 4; i ++) {
+									instr->flat_insn->detail->x86.opcode[i] = b[i];
+								}
+								/*for(int i = 0; i < 5; i ++) {
+									instr->flat_insn->detail->x86.opcode[i] = b[i];
+								}*/
+							}
+							return true;
 						}
 				}
 				return false;

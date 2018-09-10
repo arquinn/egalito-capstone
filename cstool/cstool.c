@@ -176,7 +176,7 @@ static void usage(char *prog)
 	if (cs_support(CS_ARCH_XCORE)) {
 		printf("        xcore:     xcore\n");
 	}
-	
+
 	if (cs_support(CS_ARCH_M68K)) {
 		printf("        m68k:      m68k + big endian\n");
 		printf("        m68k40:    m68k_040\n");
@@ -383,6 +383,7 @@ int main(int argc, char **argv)
 	}
 
 	cs_close(&handle);
+	free(assembly);
 
 	return 0;
 }
