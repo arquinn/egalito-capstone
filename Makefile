@@ -30,7 +30,7 @@ ifneq (,$(findstring yes,$(CAPSTONE_DIET)))
 CFLAGS ?= -Os
 CFLAGS += -DCAPSTONE_DIET
 else
-CFLAGS ?= -O3
+CFLAGS ?= -O3 -std=gnu99
 endif
 
 ifneq (,$(findstring yes,$(CAPSTONE_X86_ATT_DISABLE)))
